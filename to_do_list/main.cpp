@@ -1,3 +1,6 @@
+//-------------------------------------- 
+// Included Libraries
+//--------------------------------------
 #include <iostream> 
 #include <vector>
 #include <string>
@@ -5,16 +8,18 @@
 
 using namespace std;
 
-//-------- Class Definiton --------
-
+//-------------------------------------- 
+// Class Definition
+//--------------------------------------
 class Task {
 public:
-    string description;
-    bool completed;
+    string description;         // Decription for the tast
+    bool completed;             // Where task is completed
 
+    // initializes task with a description
     Task(string desc) {
         description = desc;
-        completed = false;
+        completed = false;      // Tasks all start as incomplete
     }
 
     void markComplete() {
@@ -22,8 +27,9 @@ public:
     }
 };
 
-//-------- Function Prototypes --------
-
+//-------------------------------------- 
+// Function Prototypes
+//--------------------------------------
 void showMenu();
 void addTask(vector<Task>& tasks);
 void viewTasks(const vector<Task>& tasks);
@@ -31,12 +37,14 @@ void completeTask(vector<Task>& tasks);
 void deleteTask(vector<Task>& tasks);
 void saveToFile(const vector<Task>& tasks);
 
-//-------- Main --------
-
+//-------------------------------------- 
+// Main
+//--------------------------------------
 int main() {
-    vector<Task> tasks;
+    vector<Task> tasks; // Stores tasks
     int choice = 0;
 
+    // Loops menu until 6 (Exit) is chosen
     while (choice != 6) {
         showMenu();
         cin >> choice;
@@ -65,8 +73,9 @@ int main() {
     }
 }
 
-//-------- Function Definitions--------
-
+//-------------------------------------- 
+// Displays MAIN MENU
+//--------------------------------------
 void showMenu() {
     cout << "\n============================\n";
     cout << "          MAIN MENU         \n";
@@ -81,22 +90,30 @@ void showMenu() {
     cout << "Enter choice: ";
 }
 
+//-------------------------------------- 
+// Adds A Task To The List
+//--------------------------------------
 void addTask(vector<Task>& tasks) {
     string desc;
     cout << "Enter task description: ";
-    cin.ignore();
-    getline(cin, desc);
 
-    tasks.push_back(Task(desc));
+    cin.ignore();                   // Clear leftover newline
+    getline(cin, desc);             // Reads line
+
+    tasks.push_back(Task(desc));    // Add new task
     cout << "Task added.\n";
 }
 
+//-------------------------------------- 
+// Displays Task Status 
+//--------------------------------------
 void viewTasks(const vector<Task>& tasks) {
     if (tasks.empty()) {
         cout << "No tasks available.\n";
         return;
     }
 
+    // Loops through and prints each task
     for (int i = 0; i < tasks.size(); i++) {
         cout << i + 1 << ". "
              << tasks[i].description
@@ -106,15 +123,19 @@ void viewTasks(const vector<Task>& tasks) {
     }
 }
 
+//-------------------------------------- 
+// Marks A Specific Task As Complete 
+//--------------------------------------
 void completeTask(vector<Task>& tasks) {
     int index;
-    viewTasks(tasks);
+    viewTasks(tasks);   // Shows task 
 
     if (tasks.empty()) return;
 
     cout << "Enter task number to complete: \n";
     cin >> index;
 
+    // Validate input
     if (index < 1 || index > tasks.size()) {
         cout << "Invalid task number.\n";
         return;
@@ -124,6 +145,9 @@ void completeTask(vector<Task>& tasks) {
     cout << "Task marked complete.\n";
 }
 
+//-------------------------------------- 
+// Deletes A Task From The List 
+//--------------------------------------
 void deleteTask(vector<Task>& tasks) {
     int index;
     viewTasks(tasks);
@@ -133,15 +157,19 @@ void deleteTask(vector<Task>& tasks) {
     cout << "Enter task number to delete: \n";
     cin >> index;
 
+    // Validate input
     if (index < 1 || index > tasks.size()) {
         cout << "Invalid task number.\n";
         return;
     }
 
-    tasks.erase(tasks.begin() + (index - 1));
+    tasks.erase(tasks.begin() + (index - 1));   // Deletes a chosen task
     cout << "Task deleted.\n";
 }
 
+//-------------------------------------- 
+// Saves All Tasks To A Text File 
+//--------------------------------------
 void saveToFile(const vector<Task>& tasks) {
     ofstream file("tasks.txt");
 
@@ -150,6 +178,7 @@ void saveToFile(const vector<Task>& tasks) {
         return;
     }
 
+    // Write tasks to tasks.txt file
     for (const auto& task : tasks) {
         file << task.description << " | "
              << (task.completed ? "Completed" : "Pending")
